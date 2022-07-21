@@ -1,18 +1,12 @@
+import { keyboardImplementationWrapper } from '@testing-library/user-event/dist/keyboard';
 import React, { useState, useEffect } from 'react';
 import {VanillaTilt} from './vanilla-tilt'
+const keys = ['C', '/', '*', '7', '8', '9', '-', '4', '5', '6', '+', '1', '2', '3', '0', '00', '.', '=']
 
 export function Calculator() {
 
-    const keys = ['C', '/', '*', '7', '8', '9', '-', '4', '5', '6', '+', '1', '2', '3', '0', '00', '.', '=']
-
-    const keyPad = keys.map(key => {
-        const className =
-            key == 'C' ? "num clear"
-            : key == '+' ? "num plus"
-            : key == '=' ? "num equal"
-            : "num";
-        return <span className={className}>{key}</span>
-    })
+    const [display, setDisplay] = useState('');
+    const [lastKey, setLastKey] = useState('');
 
     useEffect(() => {
         VanillaTilt.init(document.querySelector(".container"), {
@@ -23,10 +17,27 @@ export function Calculator() {
         });
     });
 
+    const handleClick = ({target}) => {
+        const keyValue = target.innerHTML;
+        if (keyValue === "C") setDisplay("");
+        else if (keyValue === "=") setDisplay(eval(display));
+        else if (lastKey === "=" && !(['+', '-', '*', '/']).includes(keyValue)) setDisplay(keyValue);
+        else setDisplay(display + keyValue);
+
+        setLastKey(keyValue);
+    }
+
     return (
         <form name="calc" className="calculator">
-            <input type="text" readonly className="value" name="txt" />
-            {keyPad}
+            <input type="text" readonly className="value" name="txt" value={display}/>
+            {keys.map(key => {
+                const className =
+                    key == 'C' ? "num clear"
+                    : key == '+' ? "num plus"
+                    : key == '=' ? "num equal"
+                    : "num";
+                return <span className={className} onClick={handleClick}>{key}</span>
+            })}
         </form>
     )
 }
