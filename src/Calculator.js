@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import {VanillaTilt} from './vanilla-tilt'
 
 export function Calculator() {
 
@@ -12,6 +13,15 @@ export function Calculator() {
             : "num";
         return <span className={className}>{key}</span>
     })
+
+    useEffect(() => {
+        VanillaTilt.init(document.querySelector(".container"), {
+            max: 15,
+            speed: 400,
+            glare: true,
+            "max-glare": 0.2
+        });
+    });
 
     return (
         <form name="calc" className="calculator">
