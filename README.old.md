@@ -1,2 +1,0 @@
-# numerus
-React Calculator
