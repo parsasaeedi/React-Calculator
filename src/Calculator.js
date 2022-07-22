@@ -1,4 +1,3 @@
-import { keyboardImplementationWrapper } from '@testing-library/user-event/dist/keyboard';
 import React, { useState, useEffect } from 'react';
 import {VanillaTilt} from './vanilla-tilt'
 const keys = ['C', '/', '*', '7', '8', '9', '-', '4', '5', '6', '+', '1', '2', '3', '0', '00', '.', '=']
@@ -21,15 +20,18 @@ export function Calculator() {
         const keyValue = target.innerHTML;
         if (keyValue === "C") setDisplay("");
         else if (keyValue === "=") setDisplay(eval(display));
-        else if (lastKey === "=" && !(['+', '-', '*', '/']).includes(keyValue)) setDisplay(keyValue);
-        else setDisplay(display + keyValue);
+        else if (lastKey === "=" && !['+', '-', '*', '/'].includes(keyValue)) setDisplay(keyValue);
+        else if (lastKey === '.' && keyValue === '.') {}
+        else if (['+', '-', '*', '/'].includes(lastKey) && lastKey === keyValue) {}
+        else if (['+', '-', '*', '/'].includes(lastKey) && ['+', '-', '*', '/'].includes(keyValue) && lastKey != keyValue) {setDisplay(display.slice(0, -1) + keyValue)}
+        else setDisplay(display + keyValue)
 
         setLastKey(keyValue);
     }
 
     return (
-        <form name="calc" className="calculator">
-            <input type="text" readonly className="value" name="txt" value={display}/>
+        <div className="calculator">
+            <input type="text" readOnly className="value" name="txt" value={display}/>
             {keys.map(key => {
                 const className =
                     key == 'C' ? "num clear"
@@ -38,6 +40,6 @@ export function Calculator() {
                     : "num";
                 return <span className={className} onClick={handleClick}>{key}</span>
             })}
-        </form>
+        </div>
     )
 }
