@@ -23,7 +23,7 @@ export function Calculator() {
         else if (lastKey === "=" && !['+', '-', '*', '/'].includes(keyValue)) setDisplay(keyValue);
         else if (lastKey === '.' && keyValue === '.') {}
         else if (['+', '-', '*', '/'].includes(lastKey) && lastKey === keyValue) {}
-        else if (['+', '-', '*', '/'].includes(lastKey) && ['+', '-', '*', '/'].includes(keyValue) && lastKey != keyValue) {setDisplay(display.slice(0, -1) + keyValue)}
+        else if (['+', '-', '*', '/'].includes(lastKey) && ['+', '-', '*', '/'].includes(keyValue) && lastKey !== keyValue) {setDisplay(display.slice(0, -1) + keyValue)}
         else setDisplay(display + keyValue)
 
         setLastKey(keyValue);
@@ -34,9 +34,9 @@ export function Calculator() {
             <input type="text" readOnly className="value" name="txt" value={display}/>
             {keys.map(key => {
                 const className =
-                    key == 'C' ? "num clear"
-                    : key == '+' ? "num plus"
-                    : key == '=' ? "num equal"
+                    key === 'C' ? "num clear"
+                    : key === '+' ? "num plus"
+                    : key === '=' ? "num equal"
                     : "num";
                 return <span className={className} onClick={handleClick}>{key}</span>
             })}
