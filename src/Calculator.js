@@ -8,12 +8,14 @@ export function Calculator() {
     const [lastKey, setLastKey] = useState('');
 
     useEffect(() => {
-        VanillaTilt.init(document.querySelector(".container"), {
-            max: 15,
-            speed: 400,
-            glare: true,
-            "max-glare": 0.2
-        });
+        if( !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) ) {
+            VanillaTilt.init(document.querySelector(".container"), {
+                max: 15,
+                speed: 400,
+                glare: true,
+                "max-glare": 0.2
+            });
+        }
     });
 
     const handleClick = ({target}) => {
